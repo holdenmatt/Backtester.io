@@ -4,10 +4,10 @@
 jQuery(function($) {
 
   // Shorthand the application namespace
-  var app = namespace.app;
+  var app = Backtester.app;
 
   // Include the example module
-  var Example = namespace.module("example");
+  var Example = Backtester.module("example");
 
   // Defining the application router, you can attach sub routers here.
   var Router = Backbone.Router.extend({
@@ -18,24 +18,20 @@ jQuery(function($) {
 
     index: function(hash) {
       var route = this;
-      var tutorial = new Example.Views.Tutorial();
+      var view = new Example.View();
+      view.renderTo('#main');
 
-      // Attach the tutorial to the DOM
-      tutorial.render(function(el) {
-        $("#main").html(el);
+      // Fix for hashes in pushState and hash fragment
+      if (hash && !route._alreadyTriggered) {
+        // Reset to home, pushState support automatically converts hashes
+        Backbone.history.navigate("", false);
 
-        // Fix for hashes in pushState and hash fragment
-        if (hash && !route._alreadyTriggered) {
-          // Reset to home, pushState support automatically converts hashes
-          Backbone.history.navigate("", false);
+        // Trigger the default browser behavior
+        location.hash = hash;
 
-          // Trigger the default browser behavior
-          location.hash = hash;
-
-          // Set an internal flag to stop recursive looping
-          route._alreadyTriggered = true;
-        }
-      });
+        // Set an internal flag to stop recursive looping
+        route._alreadyTriggered = true;
+      }
     }
   });
   
@@ -50,14 +46,14 @@ jQuery(function($) {
   // method, to be processed by the router.  If the link has a data-bypass
   // attribute, bypass the delegation completely.
   $(document).on("click", "a:not([data-bypass])", function(evt) {
-    // Get the anchor href and protcol
+
     var href = $(this).attr("href");
     var protocol = this.protocol + "//";
 
     // Ensure the protocol is not part of URL, meaning its relative.
     if (href && href.slice(0, protocol.length) !== protocol) {
-      // Stop the default event to ensure the link will not cause a page
-      // refresh.
+
+      // Prevent a page refresh.
       evt.preventDefault();
 
       // This uses the default router defined above, and not any routers
