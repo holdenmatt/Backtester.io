@@ -1,0 +1,23 @@
+#
+# Define file lists for Flask-webassets to bundle:
+# http://flask-assets.readthedocs.org/en/latest/index.html
+# http://elsdoerfer.name/docs/webassets/loaders.html#loaders
+#
+
+
+# Bundle all client scripts and modules.
+app.js:
+    filters: jsmin
+    output: build/app.js
+    contents:
+        - ../client/namespace.js
+        - ../client/modules/*.js
+        - ../client/index.js
+
+
+# Bundle all client templates as a Jammit-style JST file.
+templates.js:
+    filters: jst
+    output: build/templates.js
+    contents:
+        - ../client/templates/*.html

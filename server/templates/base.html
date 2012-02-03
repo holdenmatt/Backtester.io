@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>{% block title %}yoursite.com{% endblock %}</title>
+
+  <meta name="viewport" content="width=980">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Styles -->
+  <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/css/bootstrap.min.responsive.css" rel="stylesheet">
+  <style>
+    body {
+        /* 60px to make container go to the bottom of the topbar. */
+        padding-top: 60px;
+    }
+  </style>
+  {% block css %}{% endblock %}
+
+  <!-- Favicon, touch icons -->
+  <link rel="shortcut icon" href="/assets/img/favicon.ico">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png">
+
+  <!-- HTML5 shim, for IE 6-8 support of HTML elements -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <!-- Modernizr should load in head, other scripts are loaded below. -->
+  <script src="/assets/js/libs/modernizr.js"></script>
+</head>
+
+<body>
+
+  <header>
+    {% include "header.html" %}
+  </header>
+
+  <div id="main" class="container" role="main">
+    {% block main %}{% endblock %}
+  </div>
+
+  <footer>
+    {% block footer %}{% endblock %}
+  </footer>
+
+  <!-- Load JavaScript at the bottom for fast page loading -->
+
+  <!-- Fetch jQuery from Google's CDN, or fall back to local -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="/assets/js/libs/jquery.js">\x3C/script>')</script>
+
+  <!-- Additional JavaScript libraries and plugins... -->
+  <script src="/assets/js/libs/underscore.js"></script>
+  <script src="/assets/js/libs/backbone.js"></script>
+  <script src="/assets/js/libs/handlebars.js"></script>
+  <script src="/assets/js/libs/bootstrap.min.js"></script>
+
+  {% block js %}{% endblock %}
+
+  <!-- Prompt IE 6-7 users to install Chrome Frame -->
+  <!--[if lte IE 7 ]>
+    <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+    <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+  <![endif]-->
+
+</body>
+</html>

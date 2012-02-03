@@ -1,0 +1,5 @@
+.DS_Store
+*.pyc
+venv
+/assets/.webassets-cache/
+/assets/build/

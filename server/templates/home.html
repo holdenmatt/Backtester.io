@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+
+{% block js %}
+    {% assets "templates.js" %}
+        <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+    {% assets "app.js" %}
+        <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+{% endblock %}
+
+
+{% block main %}
+<h1>Home</h1>
+{% endblock %}
