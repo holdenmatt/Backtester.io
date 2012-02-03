@@ -1,5 +1,5 @@
 """
-server/app.py
+app.py
 
 Initialize the Flask app, set up webasset bundling, and import the views.
 """

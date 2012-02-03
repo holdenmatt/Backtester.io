@@ -1,5 +1,5 @@
 """
-server/views.py
+views.py
 
 Define the server routes.
 """

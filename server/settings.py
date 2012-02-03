@@ -1,5 +1,7 @@
 """
-Application settings.
+settings.py
+
+Configure application settings.
 """
 
 DEBUG = True
