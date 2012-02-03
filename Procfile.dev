@@ -1,0 +1,4 @@
+# Procfile.dev -- development
+
+# Use Flask development server.
+web: python server/app.py

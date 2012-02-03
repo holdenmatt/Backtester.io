@@ -1,5 +1,5 @@
 """
-server/__init__.py
+server/app.py
 
 Initialize the Flask app, set up webasset bundling, and import the views.
 """
@@ -28,8 +28,9 @@ for name, bundle in bundles.iteritems():
     assets.register(name, bundle)
 
 
-# The view routes are defined in views.py.
-from server import views
+# Import views.
+from views import *
+from quotes import *
 
 
 if __name__ == '__main__':

@@ -4,9 +4,7 @@ server/views.py
 Define the server routes.
 """
 from flask import render_template
-
-# Import the Flask app from the server __init__.py file.
-from server import app
+from app import app
 
 @app.route('/')
 def home():
