@@ -22,10 +22,19 @@ dirname = os.path.dirname(os.path.abspath(__file__)) + '/'
 bundles_filename = dirname + settings.BUNDLES_FILENAME
 bundles = webassets.loaders.YAMLLoader(bundles_filename).load_bundles()
 
-# Register bundles, so we can include them in templates.
+# Merge files in debug mode, but don't apply filters.
 assets = Environment(app)
+if settings.DEBUG:
+    assets.debug = 'merge'
+
 for name, bundle in bundles.iteritems():
+    # Register bundles, so we can include them in templates.
     assets.register(name, bundle)
+
+    # Disable debug mode for JST filters.
+    JSTFilter = webassets.filter.jst.JSTFilter
+    if any([isinstance(f, JSTFilter) for f in bundle.filters]):
+        bundle.debug = False
 
 
 # Import views.

@@ -3,64 +3,37 @@
 // point should be definitions.
 jQuery(function($) {
 
-    // Shorthand the application namespace
-    var app = Backtester.app;
+    var Quotes = Backtester.module('Quotes');
 
-    // Include the example module
-    var Example = Backtester.module("example");
-
-    // Defining the application router, you can attach sub routers here.
     var Router = Backbone.Router.extend({
         routes: {
-            "": "index",
-            ":hash": "index"
+            'graph/:ticker': 'graph'
         },
 
-        index: function(hash) {
-            var route = this;
-            var view = new Example.View();
-            view.renderTo('#main');
-
-            // Fix for hashes in pushState and hash fragment
-            if (hash && !route._alreadyTriggered) {
-                // Reset to home, pushState support automatically converts hashes
-                Backbone.history.navigate("", false);
-
-                // Trigger the default browser behavior
-                location.hash = hash;
-
-                // Set an internal flag to stop recursive looping
-                route._alreadyTriggered = true;
-            }
+        graph: function (ticker) {
+            Quotes.fetch(ticker);
+            console.log('graph', ticker);
         }
     });
-    
-    // Define your master router on the application namespace and trigger all
-    // navigation from this instance.
-    app.router = new Router();
 
-    // Trigger the initial route and enable HTML5 History API support
-    Backbone.history.start({ pushState: true });
+    // Create the master router, and trigger the initial route (with option HTML5 History API support).
+    Backtester.app.router = new Router();
+    Backbone.history.start({ pushState: false });
 
     // All navigation that is relative should be passed through the navigate
     // method, to be processed by the router.  If the link has a data-bypass
     // attribute, bypass the delegation completely.
-    $(document).on("click", "a:not([data-bypass])", function(evt) {
+    $(document).on('click', 'a:not([data-bypass])', function(evt) {
 
-        var href = $(this).attr("href");
-        var protocol = this.protocol + "//";
+        var href = $(this).attr('href');
+        var protocol = this.protocol + '//';
 
         // Ensure the protocol is not part of URL, meaning its relative.
         if (href && href.slice(0, protocol.length) !== protocol) {
 
             // Prevent a page refresh.
             evt.preventDefault();
-
-            // This uses the default router defined above, and not any routers
-            // that may be placed in modules.  To have this work globally (at the
-            // cost of losing all route events) you can change the following line
-            // to: Backbone.history.navigate(href, true);
-            app.router.navigate(href, true);
+            Backbone.history.navigate(href, true);
         }
     });
 });
