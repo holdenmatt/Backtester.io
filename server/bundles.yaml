@@ -5,6 +5,17 @@
 #
 
 
+# Bundle libs, except jQuery (loads from Google) and Modernizr (loads in head).
+libs.js:
+    filters: jsmin
+    output: build/libs.js
+    contents:
+        - ../assets/js/libs/underscore.js
+        - ../assets/js/libs/backbone.js
+        - ../assets/js/libs/backbone.validation.js
+        - ../assets/js/libs/bootstrap.js
+
+
 # Bundle all client scripts and modules.
 app.js:
     filters: jsmin
