@@ -19,7 +19,20 @@ this.Backtester = {
     }(),
 
 
-    // Base class for a View that renders a JST template using its model values.
+    // Model base class, which binds a plugin to allow declarative validations,
+    // validates on initialize (normally happens just on set/save), and throws errors.
+    Model: Backbone.Model.extend({
+
+        initialize: function (attrs) {
+            Backbone.Validation.bindModel(this);
+            var err = this.validate(attrs);
+            if (err) {
+                throw new Error(err);
+            }
+        }
+    }),
+
+    // View base class, which renders a JST template using its model values.
     TemplateView: Backbone.View.extend({
 
         render: function () {

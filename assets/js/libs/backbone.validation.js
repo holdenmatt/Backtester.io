@@ -67,7 +67,7 @@ Backbone.Validation = (function(Backbone, _, undefined) {
         configure: function(options) {
             _.extend(defaultOptions, options);
         },
-        
+
         bind: function(view, options) {
             options = options || {};
             var model = view.model,
@@ -81,7 +81,7 @@ Backbone.Validation = (function(Backbone, _, undefined) {
                 if(!attrs){
                     return model.validate.call(model, _.extend(getValidatedAttrs(model), model.toJSON()));
                 }
-                
+
                 var result = [],
                     invalidAttrs = [];
                     isValid = true;
@@ -130,6 +130,17 @@ Backbone.Validation = (function(Backbone, _, undefined) {
                 }
                 return isValid;
             };
+        },
+
+        // Bind validations to a model instead of a view.
+        bindModel: function (model, options) {
+            // Don't use the default callbacks.
+            options = options || {};
+            options.valid = options.valid || function () {};
+            options.invalid = options.invalid || function () {};
+
+            var view = {'model': model};
+            Backbone.Validation.bind(view, options);
         },
 
         unbind: function(view) {
