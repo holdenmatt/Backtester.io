@@ -8,10 +8,19 @@
 	/**
 	 * Store a monthly date/price timeseries for a single ticker.
 	 */
-	Quotes.TickerSeries = Backbone.Model.extend({
-		// ticker
-		// dates
-		// prices
+	Quotes.TickerSeries = Backtester.Model.extend({
+		validation: {
+			ticker: {
+				required: true,
+				pattern: '[A-Z]+'
+			},
+			dates: {
+				required: true
+			},
+			prices: {
+				required: true
+			}
+		}
 	});
 
 
@@ -45,13 +54,12 @@
 			'tickers': tickers
 		});
 
-		console.log('fetch', collection.url);
 		collection.fetch({
 			success: function (collection, response) {
-				alert('Success');
+
 			},
 			error: function () {
-				alert('An error occurred!');
+
 			}
 		});
 	}
