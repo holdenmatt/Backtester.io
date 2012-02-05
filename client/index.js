@@ -11,8 +11,7 @@ jQuery(function($) {
         },
 
         graph: function (ticker) {
-            Quotes.fetch(ticker);
-            console.log('graph', ticker);
+            Quotes.fetch([ticker]);
         }
     });
 

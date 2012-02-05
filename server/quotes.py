@@ -7,6 +7,7 @@ import csv
 import urllib
 import urllib2
 import flask
+import json as JSON
 
 from app import app
 
@@ -29,7 +30,7 @@ def quotes():
     tickers = flask.request.args.get('s', '').upper().split(',')
 
     # Fetch dates/prices for each ticker.
-    quotes = {}
+    quotes = []
     for ticker in tickers:
         prices, dates = fetch_monthly_prices(ticker)
 
@@ -37,12 +38,14 @@ def quotes():
         if prices == None:
             flask.abort(404)
 
-        quotes[ticker] = {
+        quotes.append({
+            'ticker': ticker,
             'dates': dates,
             'prices': prices
-        }
+        })
 
-    return flask.jsonify(**quotes)
+    json = JSON.dumps(quotes, indent=2)
+    return flask.Response(json, mimetype='application/json')
 
 
 def fetch_monthly_prices(ticker):
