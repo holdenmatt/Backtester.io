@@ -1,7 +1,7 @@
 """
 quotes.py
 
-Serve stock quotes fetched from Yahoo and cached in Redis.
+Serve monthly stock quotes fetched from Yahoo and cached in Redis.
 """
 import csv
 import urllib
@@ -11,39 +11,49 @@ import flask
 from app import app
 
 
-# Yahoo URL from which to fetch historical CSV data.
-YAHOO_FINANCE_URL = 'http://ichart.yahoo.com/table.csv?%s'
+# Yahoo Finance URL from which to fetch historical monthly quotes as CSV.
+YAHOO_QUOTES_URL = (
+    'http://ichart.yahoo.com/table.csv?' +
+    's=%s'  # Ticker symbol.
+    '&g=m'  # Monthly quotes.
+)
 
 
-@app.route('/quotes/<ticker>')
-def quotes(ticker):
+@app.route('/quotes/monthly/')  # ?s=vfinx,vbmfx
+def quotes():
     """
-    Return all available historical closing prices for a single ticker.
+    Return monthly closing prices for one or more ticker symbols.
     """
-    ticker = ticker.upper()
-    prices, dates = fetch_closing_prices(ticker)
 
-    # Return 404 if no data was found.
-    if prices == None:
-        flask.abort(404)
+    # Split tickers from the s= query arg.
+    tickers = flask.request.args.get('s', '').upper().split(',')
 
-    return flask.jsonify(
-        start=min(dates),
-        end=max(dates),
-        prices=prices
-    )
+    # Fetch dates/prices for each ticker.
+    quotes = {}
+    for ticker in tickers:
+        prices, dates = fetch_monthly_prices(ticker)
+
+        # 404 if any ticker doesn't have data.
+        if prices == None:
+            flask.abort(404)
+
+        quotes[ticker] = {
+            'dates': dates,
+            'prices': prices
+        }
+
+    return flask.jsonify(**quotes)
 
 
-def fetch_closing_prices(ticker):
+def fetch_monthly_prices(ticker):
     """
-    Fetch all historical dates/prices from Yahoo for a given ticker.
+    Fetch all monthly historical dates/prices from Yahoo for a given ticker.
     All prices are in cents.  Return None if no data was found.
     """
 
     # Fetch CSV data from Yahoo.
     try:
-        query = urllib.urlencode({'s': ticker})
-        url = YAHOO_FINANCE_URL % query
+        url = YAHOO_QUOTES_URL % urllib.quote(ticker)
         data = urllib2.urlopen(url)
     except urllib2.HTTPError:
         return None, None
