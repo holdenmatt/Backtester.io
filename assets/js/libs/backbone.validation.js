@@ -69,6 +69,13 @@ Backbone.Validation = (function(Backbone, _, undefined) {
         },
 
         bind: function(view, options) {
+
+            // Allow calling bind on a model instead of a view.
+            if (view instanceof Backbone.Model) {
+                view = new Backbone.View({model: view});
+                return Backbone.Validation.bind(view, options);
+            }
+
             options = options || {};
             var model = view.model,
                 forceUpdate = options.forceUpdate || defaultOptions.forceUpdate,
@@ -130,17 +137,6 @@ Backbone.Validation = (function(Backbone, _, undefined) {
                 }
                 return isValid;
             };
-        },
-
-        // Bind validations to a model instead of a view.
-        bindModel: function (model, options) {
-            // Don't use the default callbacks.
-            options = options || {};
-            options.valid = options.valid || function () {};
-            options.invalid = options.invalid || function () {};
-
-            var view = {'model': model};
-            Backbone.Validation.bind(view, options);
         },
 
         unbind: function(view) {

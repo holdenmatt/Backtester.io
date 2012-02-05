@@ -24,7 +24,7 @@ this.Backtester = {
     Model: Backbone.Model.extend({
 
         initialize: function (attrs) {
-            Backbone.Validation.bindModel(this);
+            Backbone.Validation.bind(this);
             var err = this.validate(attrs);
             if (err) {
                 throw new Error(err);
