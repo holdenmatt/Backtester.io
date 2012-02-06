@@ -3,7 +3,20 @@
 // point should be definitions.
 jQuery(function($) {
 
-    var Quotes = Backtester.module('Quotes');
+    // Google APIs should be loaded once the DOM is ready.
+    google.load('visualization', '1', {
+        packages: [
+            'annotatedtimeline',
+            'imagesparkline'
+        ],
+        callback: function () {
+            // Tell listeners that we're loaded.
+            Backtester.app.trigger('google.visualization:loaded');
+        }
+    });
+
+
+    var TimeSeries = Backtester.module('TimeSeries');
 
     var Router = Backbone.Router.extend({
         routes: {
@@ -11,7 +24,19 @@ jQuery(function($) {
         },
 
         graph: function (ticker) {
-            Quotes.fetch([ticker]);
+            TimeSeries.fetchMonthlyQuotes([ticker], {
+                success: function (collection) {
+                    collection.each(function (timeseries) {
+                        new TimeSeries.SparkLine({
+                            model: timeseries
+                        }).appendTo('#main');
+
+                        new TimeSeries.AnnotatedTimeLine({
+                            model: timeseries
+                        }).appendTo('#main');
+                    });
+                }
+            });
         }
     });
 
