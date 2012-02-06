@@ -20,12 +20,19 @@
 
     Backtester.View = Backbone.View.extend({
 
+    	// Perform additional render actions requiring el to be in the DOM.
+    	afterRender: function () {
+    		// Do nothing.
+    	},
+
         renderTo: function (target) {
             $(target).html(this.render().el);
+            this.afterRender();
         },
 
         appendTo: function (target) {
             $(target).append(this.render().el);
+            this.afterRender();
         }
     });
 

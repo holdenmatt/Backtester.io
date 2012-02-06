@@ -125,7 +125,7 @@
      */
 	var Chart = Backtester.View.extend({
 
-		render: function () {
+		afterRender: function () {
 
 			var view = this;
 			if (Chart.ready) {
