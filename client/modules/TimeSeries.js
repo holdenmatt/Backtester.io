@@ -103,13 +103,12 @@
 		afterRender: function () {
 
 			var view = this;
-			if (Chart.ready) {
+			if (Backtester.app.visualization.loaded) {
 				// Draw immediately if the API is ready.
 				view.draw();
 			} else {
 				// Draw once it's loaded.
-				Backtester.app.on('google.visualization:loaded', function () {
-					Chart.ready = true;
+				Backtester.app.on('visualization:load', function () {
 					view.draw();
 				});
 			}
@@ -119,9 +118,6 @@
 		draw: function () {
 			// Subclasses implement this.
 		}
-	}, {
-		// Has the Google Chart API loaded yet?
-		ready: false
 	});
 
 

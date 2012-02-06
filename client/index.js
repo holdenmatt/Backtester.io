@@ -4,6 +4,7 @@
 jQuery(function($) {
 
     // Google APIs should be loaded once the DOM is ready.
+    Backtester.app.visualization = {};
     google.load('visualization', '1', {
         packages: [
             'annotatedtimeline',
@@ -11,7 +12,8 @@ jQuery(function($) {
         ],
         callback: function () {
             // Tell listeners that we're loaded.
-            Backtester.app.trigger('google.visualization:loaded');
+            Backtester.app.visualization.loaded = true;
+            Backtester.app.trigger('visualization:load');
         }
     });
 
@@ -70,6 +72,7 @@ jQuery(function($) {
                     $('#main').html('');
 
                     collection.each(function (timeseries) {
+
                         new TimeSeries.SparkLine({
                             model: timeseries
                         }).appendTo('#main');
