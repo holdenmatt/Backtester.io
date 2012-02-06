@@ -13,6 +13,7 @@ libs.js:
         - ../assets/js/libs/underscore.js
         - ../assets/js/libs/backbone.js
         - ../assets/js/libs/backbone.validation.js
+        - ../assets/js/libs/moment.js
         - ../assets/js/libs/bootstrap.js
 
 
@@ -22,6 +23,7 @@ app.js:
     output: build/app.js
     contents:
         - ../client/namespace.js
+        - ../client/Core.js
         - ../client/modules/*.js
         - ../client/index.js
 
