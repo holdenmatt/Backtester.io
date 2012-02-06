@@ -16,6 +16,19 @@ jQuery(function($) {
     });
 
 
+    // Update ticker on search.
+    $('form.navbar-search').submit(function () {
+
+        // Get (and clear) and search input value.
+        var input = $(this).find('input'),
+            href = 'graph/' + input.val();
+        input.val('');
+
+        Backbone.history.navigate(href, true);
+        return false;
+    });
+
+
     var TimeSeries = Backtester.module('TimeSeries');
 
     var Router = Backbone.Router.extend({
@@ -37,6 +50,10 @@ jQuery(function($) {
                             model: timeseries
                         }).appendTo('#main');
                     });
+                },
+
+                error: function () {
+                    alert('Error!');
                 }
             });
         }
