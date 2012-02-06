@@ -56,15 +56,24 @@
 			});
 		},
 
+		// Return the 'values' array, converted from integer cents to dollars.
+		// TODO: perhaps this be a subclass?
+		getValues: function () {
+			return _.map(this.get('values'), function (value) {
+				return value / 100.0;
+			});
+		},
+
 		// Return a google.visualization.DataTable for this TimeSeries.
 		getDataTable: function () {
 
 			var dates  = this.getDates(),
-				values = this.get('values');
+				values = this.getValues(),
+				name   = this.get('name');
 
 			var data = new google.visualization.DataTable();
 	        data.addColumn('date', 'Date');
-			data.addColumn('number', this.get('name'));
+			data.addColumn('number', name);
 	        data.addRows(_.zip(dates, values));
 
 	        return data;
@@ -73,9 +82,12 @@
 		// Return only the values (no dates) in a DataTable.
 		getValuesTable: function () {
 
+			var values = this.getValues(),
+				name   = this.get('name');
+
 			var data = new google.visualization.DataTable();
-			data.addColumn('number', this.get('name'));
-	        data.addRows(_.zip(this.get('values')));
+			data.addColumn('number', name);
+	        data.addRows(_.zip(values));
 
 	        return data;
 		}
