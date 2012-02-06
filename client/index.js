@@ -21,7 +21,7 @@ jQuery(function($) {
 
         // Get (and clear) and search input value.
         var input = $(this).find('input'),
-            href = 'graph/' + input.val();
+            href = 'graph/?tickers=' + input.val();
         input.val('');
 
         Backbone.history.navigate(href, true);
@@ -29,22 +29,50 @@ jQuery(function($) {
     });
 
 
-    var TimeSeries = Backtester.module('TimeSeries');
+    // Load modules.
+    var Quotes = Backtester.module('Quotes'),
+        TimeSeries = Backtester.module('TimeSeries');
+
+
+    // Parse out query parameters.
+    // http://james.padolsey.com/javascript/bujs-1-getparameterbyname/
+    var getParameterByName = function(name, queryString) {
+        queryString = queryString || window.location.search;
+
+        var match = RegExp('(^|[?&])' + name + '=([^&]*)').exec(queryString);
+        return match && decodeURIComponent(match[2].replace(/\+/g, ' '));
+    }
+
 
     var Router = Backbone.Router.extend({
         routes: {
-            'graph/:ticker': 'graph'
+            'graph/?:args': 'graph'
         },
 
-        graph: function (ticker) {
+        graph: function (args) {
 
-            TimeSeries.fetchMonthlyQuotes([ticker], {
+            var tickers  = getParameterByName('tickers', args),
+                percents = getParameterByName('percents', args);
 
+            tickers = tickers ? tickers.toUpperCase().split(',') : null;
+            percents = percents ? percents.split(',') : null;
+
+            if (!tickers) {
+                throw new Error('tickers is required');
+            }
+            if (percents && percents.length !== tickers.length) {
+                throw new Error('percents/tickers must have matching length');
+            }
+
+            Quotes.fetch(tickers, {
                 success: function (collection) {
+
+                    $('#main').html('');
+
                     collection.each(function (timeseries) {
                         new TimeSeries.SparkLine({
                             model: timeseries
-                        }).renderTo('#main');
+                        }).appendTo('#main');
 
                         new TimeSeries.AnnotatedTimeLine({
                             model: timeseries
