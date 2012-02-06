@@ -1,13 +1,13 @@
 /**
  * TimeSeries.js
  *
- * Model a timeseries of dates/values, and provide graphical views.
- * Manage fetching monthly historical quotes from the quote server.
+ * Model a timeseries of dates/values, and provide several graphical views.
  */
 (function(TimeSeries) {
 
 	/**
-	 * A single TimeSeries of dates/values, with an optional name.
+	 * A single TimeSeries of dates/values, with a name.
+	 * Provides functions to return corresponding Google Visualization DataTables.
 	 */
 	TimeSeries.Model = Backtester.Model.extend({
 
@@ -48,7 +48,8 @@
 			}
 		},
 
-		// Return the 'dates' array, converted to JavaScript Date objects.
+		// Return the dates to use in a DataTable.
+		// We store them as date strings, but convert them to JavaScript Date objects as needed.
 		getDates: function () {
 			var format = this.dateFormat;
 			return _.map(this.get('dates'), function (date) {
@@ -56,12 +57,9 @@
 			});
 		},
 
-		// Return the 'values' array, converted from integer cents to dollars.
-		// TODO: perhaps this be a subclass?
+		// Return the values to use in a DataTable.
 		getValues: function () {
-			return _.map(this.get('values'), function (value) {
-				return value / 100.0;
-			});
+			return this.get('values');
 		},
 
 		// Return a google.visualization.DataTable for this TimeSeries.
@@ -92,41 +90,6 @@
 	        return data;
 		}
 	});
-
-
-	/**
-	 * Fetch a collection of montly closing price TimeSeries for one or more tickers.
-	 */
-	TimeSeries.MonthlyQuotes = Backbone.Collection.extend({
-
-		model: TimeSeries.Model,
-		baseUrl: '/quotes/monthly?s=',
-
-		initialize: function (models, options) {
-			options = options || {};
-			if (!options.tickers) {
-				throw new Error('Missing required option: tickers');
-			}
-			if (!_.isArray(options.tickers)) {
-				throw new Error('tickers must be an array');
-			}
-
-			// Append tickers to the URL from which to fetch quotes.
-			this.url = this.baseUrl + options.tickers.join(',');
-		}
-	});
-
-
-	// Fetch all monthly quotes for some given tickers.
-	TimeSeries.fetchMonthlyQuotes = function (tickers, options) {
-		options = options || {};
-
-		var collection = new TimeSeries.MonthlyQuotes([], {
-			'tickers': tickers
-		});
-
-		collection.fetch(options);
-	};
 
 
 	/*--- Chart Views ---*/
@@ -162,7 +125,9 @@
 	});
 
 
-	// Render a TimeSeries as a simple sparkline image.
+	/**
+	 * Render a TimeSeries as a simple sparkline image.
+	 */
 	TimeSeries.SparkLine = Chart.extend({
 		className: 'SparkLine',
 
@@ -180,7 +145,9 @@
 	});
 
 
-	// Render a collection of TimeSeries on an interactive timeline.
+	/**
+	 * Render a collection of TimeSeries on an interactive timeline.
+	 */
 	TimeSeries.AnnotatedTimeLine = Chart.extend({
 		className: 'AnnotatedTimeLine',
 

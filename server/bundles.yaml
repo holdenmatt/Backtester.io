@@ -24,7 +24,8 @@ app.js:
     contents:
         - ../client/namespace.js
         - ../client/Core.js
-        - ../client/modules/*.js
+        - ../client/modules/TimeSeries.js
+        - ../client/modules/Quotes.js
         - ../client/index.js
 
 
