@@ -27,7 +27,8 @@ def quotes():
     """
 
     # Split tickers from the s= query arg.
-    tickers = flask.request.args.get('s', '').upper().split(',')
+    tickers = flask.request.args.get('s', '')
+    tickers = tickers.upper().split(',') if tickers else []
 
     # Fetch dates/prices for each ticker.
     quotes = []
@@ -39,7 +40,7 @@ def quotes():
             flask.abort(404)
 
         quotes.append({
-            'name': ticker,
+            'ticker': ticker,
             'dates': dates,
             'values': prices
         })
