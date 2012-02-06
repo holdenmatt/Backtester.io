@@ -39,9 +39,9 @@ def quotes():
             flask.abort(404)
 
         quotes.append({
-            'ticker': ticker,
+            'name': ticker,
             'dates': dates,
-            'prices': prices
+            'values': prices
         })
 
     json = JSON.dumps(quotes, indent=2)
@@ -73,5 +73,9 @@ def fetch_monthly_prices(ticker):
 
         dates.append(date)
         prices.append(price)
+
+    # Reverse the lists, so dates are in order.
+    prices.reverse()
+    dates.reverse()
 
     return prices, dates
