@@ -24,12 +24,14 @@ jQuery(function($) {
         },
 
         graph: function (ticker) {
+
             TimeSeries.fetchMonthlyQuotes([ticker], {
+
                 success: function (collection) {
                     collection.each(function (timeseries) {
                         new TimeSeries.SparkLine({
                             model: timeseries
-                        }).appendTo('#main');
+                        }).renderTo('#main');
 
                         new TimeSeries.AnnotatedTimeLine({
                             model: timeseries

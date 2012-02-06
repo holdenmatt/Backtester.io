@@ -124,17 +124,17 @@
      * The Chart base class draws itself as soon as the chart API has loaded.
      */
 	var Chart = Backtester.View.extend({
-		ready: false,
 
 		render: function () {
+
 			var view = this;
-			if (view.ready) {
+			if (Chart.ready) {
 				// Draw immediately if the API is ready.
 				view.draw();
 			} else {
 				// Draw once it's loaded.
 				Backtester.app.on('google.visualization:loaded', function () {
-					view.ready = true;
+					Chart.ready = true;
 					view.draw();
 				});
 			}
@@ -144,6 +144,9 @@
 		draw: function () {
 			// Subclasses implement this.
 		}
+	}, {
+		// Has the Google Chart API loaded yet?
+		ready: false
 	});
 
 
