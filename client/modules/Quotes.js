@@ -41,7 +41,7 @@
 	Quotes.MonthlyQuotes = Backbone.Collection.extend({
 
 		model: Quotes.TimeSeries,
-		baseUrl: '/quotes/monthly?s=',
+		baseUrl: '/quotes/monthly/?s=',
 
 		initialize: function (models, options) {
 			options = options || {};
@@ -86,12 +86,15 @@
 		var cached = Quotes.cache.pluck('id'),
 			needed = _.difference(tickers, cached);
 
-		console.log('Cached: [' + cached + '].  Fetching: [' + needed + '].');
+		console.log('Cached: [' + cached + '].');
 
 		// If everything we need is already cached, just return the collection.
 		if (needed.length === 0) {
 			options.success(Quotes.cache.getCollection(tickers));
+			return;
 		}
+
+		console.log('Fetching: [' + needed + '].');
 
 		// Otherwise, fetch what we need to add to the cache.
 		var collection = new Quotes.MonthlyQuotes([], {
