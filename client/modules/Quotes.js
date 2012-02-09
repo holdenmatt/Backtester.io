@@ -38,7 +38,7 @@
 	/**
 	 * Fetch/manage a collection of montly closing price TimeSeries for one or more tickers.
 	 */
-	Quotes.MonthlyQuotes = Backbone.Collection.extend({
+	Quotes.MonthlyQuotes = TimeSeries.Collection.extend({
 
 		model: Quotes.TimeSeries,
 		baseUrl: '/quotes/monthly/?s=',
@@ -72,7 +72,7 @@
 			}
 			return model;
 		});
-		return new Backbone.Collection(models);
+		return new TimeSeries.Collection(models);
 	};
 
 	/**
@@ -106,7 +106,9 @@
 				Quotes.cache.add(collection.models);
 				options.success(Quotes.cache.getCollection(tickers));
 			},
-			error: options.error || function () {}
+			error: options.error || function () {
+				alert('Error!');
+			}
 		});
 	};
 
