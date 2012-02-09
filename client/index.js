@@ -1,40 +1,9 @@
-// Treat the jQuery ready function as the entry point to the application.
-// Inside this function, kick-off all initialization, everything up to this
-// point should be definitions.
-jQuery(function($) {
-
-    // Google APIs should be loaded once the DOM is ready.
-    Backtester.app.visualization = {};
-    google.load('visualization', '1', {
-        packages: [
-            'annotatedtimeline',
-            'imagesparkline'
-        ],
-        callback: function () {
-            // Tell listeners that we're loaded.
-            Backtester.app.visualization.loaded = true;
-            Backtester.app.trigger('visualization:load');
-        }
-    });
-
-
-    // Update ticker on search.
-    $('form.navbar-search').submit(function () {
-
-        // Get (and clear) and search input value.
-        var input = $(this).find('input'),
-            href = 'graph/?tickers=' + input.val();
-        input.val('');
-
-        Backbone.history.navigate(href, true);
-        return false;
-    });
-
+(function () {
 
     // Load modules.
     var Quotes = Backtester.module('Quotes'),
-        TimeSeries = Backtester.module('TimeSeries');
-
+        TimeSeries = Backtester.module('TimeSeries'),
+        Strategy = Backtester.module('Strategy');
 
     // Parse out query parameters.
     // http://james.padolsey.com/javascript/bujs-1-getparameterbyname/
@@ -43,71 +12,107 @@ jQuery(function($) {
 
         var match = RegExp('(^|[?&])' + name + '=([^&]*)').exec(queryString);
         return match && decodeURIComponent(match[2].replace(/\+/g, ' '));
-    }
+    };
 
-
+    // Define the application router.
     var Router = Backbone.Router.extend({
         routes: {
-            'graph/?:args': 'graph'
+            'strategy/?:args': 'strategy'
         },
 
-        graph: function (args) {
+        strategy: function (args) {
 
-            var tickers  = getParameterByName('tickers', args),
-                percents = getParameterByName('percents', args);
+            var tickers  = getParameterByName('tickers', args) || '',
+                percents = getParameterByName('percents', args) || '';
 
-            tickers = tickers ? tickers.toUpperCase().split(',') : null;
-            percents = percents ? percents.split(',') : null;
+            // Split args into arrays, ignoring empty values.
+            tickers = _.compact(tickers.toUpperCase().split(',')),
+            percents = _.compact(percents.split(','));
 
-            if (!tickers) {
-                throw new Error('tickers is required');
-            }
-            if (percents && percents.length !== tickers.length) {
-                throw new Error('percents/tickers must have matching length');
-            }
+            // Convert percents to numbers.
+            percents = _.map(percents, function (percent) {
+                return parseFloat(percent);
+            });
 
-            Quotes.fetch(tickers, {
-                success: function (collection) {
+            var strategy = new Strategy.Model({
+                'initialAmount': 10000,
+                'tickers': tickers,
+                'percents': percents
+            });
 
-                    $('#main').html('');
+            strategy.backtest(function (quotes, values, allocations) {
+                console.log(values, allocations);
 
-                    collection.each(function (timeseries) {
+                $('#main').html('');
 
-                        new TimeSeries.SparkLine({
-                            model: timeseries
-                        }).appendTo('#main');
+                quotes.each(function (timeseries) {
 
-                        new TimeSeries.AnnotatedTimeLine({
-                            model: timeseries
-                        }).appendTo('#main');
-                    });
-                },
-
-                error: function () {
-                    alert('Error!');
-                }
+                    new TimeSeries.SparkLine({
+                        model: timeseries
+                    }).appendTo('#main');
+                    /*
+                    new TimeSeries.AnnotatedTimeLine({
+                        model: timeseries
+                    }).appendTo('#main');
+                    */
+                });
             });
         }
     });
 
-    // Create the master router, and trigger the initial route (with option HTML5 History API support).
-    Backtester.app.router = new Router();
-    Backbone.history.start({ pushState: false });
 
-    // All navigation that is relative should be passed through the navigate
-    // method, to be processed by the router.  If the link has a data-bypass
-    // attribute, bypass the delegation completely.
-    $(document).on('click', 'a:not([data-bypass])', function(evt) {
+    // Treat the jQuery ready function as the entry point to the application.
+    // Inside this function, kick-off all initialization, everything up to this
+    // point should be definitions.
+    jQuery(function($) {
 
-        var href = $(this).attr('href');
-        var protocol = this.protocol + '//';
+        // Google APIs should be loaded once the DOM is ready.
+        Backtester.app.visualization = {};
+        google.load('visualization', '1', {
+            packages: [
+                'annotatedtimeline',
+                'imagesparkline'
+            ],
+            callback: function () {
+                // Tell listeners that we're loaded.
+                Backtester.app.visualization.loaded = true;
+                Backtester.app.trigger('visualization:load');
+            }
+        });
 
-        // Ensure the protocol is not part of URL, meaning its relative.
-        if (href && href.slice(0, protocol.length) !== protocol) {
 
-            // Prevent a page refresh.
-            evt.preventDefault();
+        // Update ticker on search.
+        $('form.navbar-search').submit(function () {
+
+            // Get (and clear) and search input value.
+            var input = $(this).find('input'),
+                href = 'graph/?tickers=' + input.val();
+            input.val('');
+
             Backbone.history.navigate(href, true);
-        }
+            return false;
+        });
+
+
+        // Create the master router, and trigger the initial route (with option HTML5 History API support).
+        Backtester.app.router = new Router();
+        Backbone.history.start({ pushState: false });
+
+        // All navigation that is relative should be passed through the navigate
+        // method, to be processed by the router.  If the link has a data-bypass
+        // attribute, bypass the delegation completely.
+        $(document).on('click', 'a:not([data-bypass])', function(evt) {
+
+            var href = $(this).attr('href');
+            var protocol = this.protocol + '//';
+
+            // Ensure the protocol is not part of URL, meaning its relative.
+            if (href && href.slice(0, protocol.length) !== protocol) {
+
+                // Prevent a page refresh.
+                evt.preventDefault();
+                Backbone.history.navigate(href, true);
+            }
+        });
     });
-});
+})();
