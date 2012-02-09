@@ -22,10 +22,12 @@ app.js:
     filters: jsmin
     output: build/app.js
     contents:
+        - ../client/_.js
         - ../client/namespace.js
         - ../client/Core.js
         - ../client/modules/TimeSeries.js
         - ../client/modules/Quotes.js
+        - ../client/modules/Strategy.js
         - ../client/index.js
 
 
