@@ -36,12 +36,11 @@
             });
 
             var strategy = new Strategy.Model({
-                'initialAmount': 10000,
                 'tickers': tickers,
                 'percents': percents
             });
 
-            strategy.backtest(function (quotes, values, allocations) {
+            strategy.backtest(function (quotes, values) {
 
                 // Clear any existing content.
                 $('#main').html('');
@@ -56,12 +55,25 @@
 
                 new Charts.Chart({
                     title: {
+                        text: 'Historical Values'
+                    },
+                    subtitle: {
+                        text: 'From date - to date'
+                    },
+                    series: series
+                }).appendTo('#main');
+
+                new Charts.Chart({
+                    title: {
                         text: 'Values'
                     },
                     subtitle: {
                         text: 'Subtitle'
                     },
-                    series: series
+                    series: [{
+                        dates: quotes.dates(),
+                        values: values
+                    }]
                 }).appendTo('#main');
             });
         }
