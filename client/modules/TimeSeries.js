@@ -1,13 +1,12 @@
 /**
  * TimeSeries.js
  *
- * Model a timeseries of dates/values, and provide several graphical views.
+ * Model a timeseries of dates/values.
  */
 (function(TimeSeries) {
 
 	/**
 	 * A single TimeSeries of dates/values, with a name.
-	 * Provides functions to return corresponding Google Visualization DataTables.
 	 */
 	TimeSeries.Model = Backtester.Model.extend({
 
@@ -20,9 +19,6 @@
 		},
 
 		validation: {
-			name: {
-
-			},
 			dates: {
 				required: true,
 				fn: function (dates) {
@@ -59,7 +55,29 @@
 
 		getValues: function () {
 			return this.get('values');
-		}
+		},
+
+        // Return the % change from the first to last values.
+        getPercentChange: function () {
+            var values = this.get('values');
+                first = values[0],
+                last = values[values.length - 1];
+            return 100.0 * last / first;
+        },
+
+        getVariance: function () {
+
+            var values = this.get('values'),
+                mean = _.sum(values) / values.length;
+
+            return _.sum(_.map(values, function (value) {
+                return (value - mean) * (value - mean);
+            }));
+        },
+
+        getStandardDeviation: function () {
+            return Math.sqrt(this.getVariance());
+        }
 	});
 
 
@@ -146,7 +164,7 @@
 			for (var i = 0; i < percents.length; i++) {
 				// Get the target value and share quantity for this ticker.
 				total = amount * percents[i] / 100.0;
-				quantity = values[i] / total;
+				quantity = total / values[i];
 				allocation.push(quantity);
 			}
 
