@@ -57,24 +57,61 @@
 			return this.get('values');
 		},
 
-        // Return the % change from the first to last values.
-        getPercentChange: function () {
+        // Convert the values to % changes from the initial value.
+        getPercentChanges: function () {
             var values = this.get('values');
-                first = values[0],
-                last = values[values.length - 1];
-            return 100.0 * last / first;
+                first = values[0];
+            return _.map(values, function (value) {
+                return 100.0 * value / first;
+            });
         },
 
-        getVariance: function () {
+        // Return the annualized % rate of return from start to end.
+        getAnnualizedReturn: function () {
 
             var values = this.get('values'),
-                mean = _.sum(values) / values.length;
+                dates = this.get('dates');
 
-            return _.sum(_.map(values, function (value) {
-                return (value - mean) * (value - mean);
-            }));
+            // Get the total duration in fractional years.
+            var start = moment(_.first(dates)),
+                end = moment(_.last(dates)),
+                years = end.diff(start, 'years', true);
+
+            // Compute the annualized rate of return.
+            var ratio = _.last(values) / _.first(values),
+                rate = Math.pow(ratio, 1 / years) - 1;
+
+            // Return it as a percent.
+            return 100.0 * rate;
         },
 
+        // Return the array of consecutive 1-year % returns, starting from the start date.
+        getYearlyReturns: function () {
+
+            var values = this.get('values'),
+                returns = [],
+                percent;
+
+            for (var end = 12; end < values.length; end += 12) {
+                percent = 100.0 * values[end] / values[end - 12];
+                returns.push(percent);
+            }
+            return returns;
+        },
+
+        // Return the % variance in 1-year returns.
+        getVariance: function () {
+
+            var returns = this.getYearlyReturns(),
+                mean = _.sum(returns) / returns.length,
+                squaredDiff = _.map(returns, function (value) {
+                    return (value - mean) * (value - mean);
+                });
+
+            return _.sum(squaredDiff) / squaredDiff.length;
+        },
+
+        // Return the % standard deviation in 1-year returns.
         getStandardDeviation: function () {
             return Math.sqrt(this.getVariance());
         }
