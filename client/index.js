@@ -3,7 +3,7 @@
     // Load modules.
     var Quotes      = Backtester.module('Quotes'),
         TimeSeries  = Backtester.module('TimeSeries'),
-        Strategy    = Backtester.module('Strategy'),
+        Portfolio   = Backtester.module('Portfolio'),
         Charts      = Backtester.module('Charts');
 
     // Parse out query parameters.
@@ -12,70 +12,59 @@
         queryString = queryString || window.location.search;
 
         var match = RegExp('(^|[?&])' + name + '=([^&]*)').exec(queryString);
-        return match && decodeURIComponent(match[2].replace(/\+/g, ' '));
+        return match ? decodeURIComponent(match[2].replace(/\+/g, ' ')) : '';
     };
 
     // Define the application router.
     var Router = Backbone.Router.extend({
         routes: {
-            'strategy/?:args': 'strategy'
+            'portfolio/?:args': 'portfolio'
         },
 
-        strategy: function (args) {
+        portfolio: function (args) {
 
-            var tickers  = getParameterByName('tickers', args) || '',
-                percents = getParameterByName('percents', args) || '';
+            var tickers  = getParameterByName('tickers', args).toUpperCase(),
+                percents = getParameterByName('percents', args),
+                horizon  = getParameterByName('horizon', args);
 
             // Split args into arrays, ignoring empty values.
-            tickers = _.compact(tickers.toUpperCase().split(',')),
+            tickers = _.compact(tickers.split(',')),
             percents = _.compact(percents.split(','));
+
+            horizon = parseInt(horizon || '10', 10);
 
             // Convert percents to numbers.
             percents = _.map(percents, function (percent) {
                 return parseFloat(percent);
             });
 
-            var strategy = new Strategy.Model({
+            var portfolio = new Portfolio.Model({
                 'tickers': tickers,
-                'percents': percents
+                'percents': percents,
+                'horizon': horizon
             });
 
-            strategy.backtest(function (quotes, values) {
+            // Clear any existing content.
+            $('#main').html('');
 
-                // Clear any existing content.
-                $('#main').html('');
+            // Show historical quotes for all portfolio constituents.
+            /*
+            new Portfolio.Views.Quotes({
+                model: portfolio
+            }).appendTo('#main');
+            */
 
-                var series = quotes.map(function (timeseries) {
-                    return {
-                        name: timeseries.get('ticker'),
-                        dates: timeseries.get('dates'),
-                        values: timeseries.getValues()
-                    };
-                });
+            /*
+            // Show annualized returns, by starting year.
+            new Portfolio.Views.Returns({
+                model: portfolio 
+            }).appendTo('#main');
+            */
 
-                new Charts.Chart({
-                    title: {
-                        text: 'Historical Values'
-                    },
-                    subtitle: {
-                        text: 'From date - to date'
-                    },
-                    series: series
-                }).appendTo('#main');
-
-                new Charts.Chart({
-                    title: {
-                        text: 'Values'
-                    },
-                    subtitle: {
-                        text: 'Subtitle'
-                    },
-                    series: [{
-                        dates: quotes.dates(),
-                        values: values
-                    }]
-                }).appendTo('#main');
-            });
+            // Show risk vs reward.
+            new Portfolio.Views.RiskReturn({
+                model: portfolio 
+            }).appendTo('#main');
         }
     });
 
