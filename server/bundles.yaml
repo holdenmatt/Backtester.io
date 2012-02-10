@@ -14,6 +14,8 @@ libs.js:
         - ../assets/js/libs/backbone.js
         - ../assets/js/libs/backbone.validation.js
         - ../assets/js/libs/moment.js
+        - ../assets/js/libs/highcharts.js
+        - ../assets/js/libs/highstock.js
         - ../assets/js/libs/bootstrap.js
 
 
@@ -28,6 +30,7 @@ app.js:
         - ../client/modules/TimeSeries.js
         - ../client/modules/Quotes.js
         - ../client/modules/Strategy.js
+        - ../client/modules/Charts.js
         - ../client/index.js
 
 
