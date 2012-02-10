@@ -141,11 +141,33 @@
     };
 
 
-    // Base class for several chart views.
+    // Base class for all chart views.
     var Chart = Backtester.View.extend({
 
+        // Apply some option defaults to all views.
+        // Override these in subclasses or passed options.
+        globalDefaults: {
+            chart: {
+                width: '900',
+                height: '400'
+            },
+            credits: {
+                // Hide attribution string.
+                enabled: false
+            },
+            plotOptions: {
+                series: {
+                    animation: {
+                        duration: 500
+                    }
+                }
+            }
+        },
+
         initialize: function (options) {
-            this.options = _.extend({}, this.defaults, options);
+
+            // Use $.extend to do a 'deep' recursive extend of options.
+            this.options = $.extend(true, {}, this.globalDefaults, this.defaults, options);
             this.options.chart.renderTo = this.el;
 
             _.bindAll(this, 'draw');
@@ -164,10 +186,6 @@
             chart: {
                 type: 'line'
             },
-            credits: {
-                // Hide attribution string.
-                enabled: false
-            },
             legend: {
                 align: 'right',
                 verticalAlign: 'top',
@@ -178,19 +196,6 @@
                 crosshairs: true,
                 shared: true
             },
-            plotOptions: {
-                series: {
-                    animation: {
-                        duration: 500
-                    }
-                },
-                line: {
-                    lineWidth: 2,
-                    marker: {
-                        enabled: false
-                    }
-                }
-            },
             xAxis: {
                 type: 'datetime'
             },
@@ -199,6 +204,14 @@
                     text: 'Value ($)'
                 },
                 min: 0
+            },
+            plotOptions: {
+                line: {
+                    lineWidth: 2,
+                    marker: {
+                        enabled: false
+                    }
+                }
             }
         },
 
@@ -246,27 +259,18 @@
             title: {
                 text: 'Annualized Return'
             },
-            credits: {
-                // Hide attribution string.
-                enabled: false
-            },
-            plotOptions: {
-                series: {
-                    animation: {
-                        duration: 500
-                    }
-                },
-                column: {
-                    pointPadding: 0.2,
-                    borderWidth: 0
-                }
-            },
             xAxis: {
                 type: 'datetime'
             },
             yAxis: {
                 title: {
                     text: '%'
+                }
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
                 }
             }
         },
@@ -310,17 +314,6 @@
             },
             title: {
                 text: 'Risk vs. Return'
-            },
-            credits: {
-                // Hide attribution string.
-                enabled: false
-            },
-            plotOptions: {
-                series: {
-                    animation: {
-                        duration: 500
-                    }
-                }
             },
             xAxis: {
                 title: {
