@@ -91,6 +91,7 @@
 		collection.fetch({
 			success: function (collection) {
 				// Save the fetched results in the cache, and return the complete collection.
+				console.log('Success: [' + tickers + ']');
 				cache.add(collection.models);
 				success.call(null, cache.getCollection(tickers));
 			},

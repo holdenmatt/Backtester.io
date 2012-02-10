@@ -7,8 +7,7 @@
 
 
 	var TimeSeries = Backtester.module('TimeSeries'),
-		Quotes = Backtester.module('Quotes'),
-        Charts = Backtester.module('Charts');
+		Quotes = Backtester.module('Quotes');
 
 
 	// Describe and backtest a portfolio allocation (tickers/percents).
@@ -301,8 +300,9 @@
     });
 
 
-    // Render a scatter plot showing risk/return pairs for a time horizon.
-    Portfolio.Views.RiskReturn = Chart.extend({
+    // Render a scatter plot showing risk (std dev of 1-year returns)
+    // vs reward (annualized returns) for a time horizon.
+    Portfolio.Views.RiskReward = Chart.extend({
 
         defaults: {
             chart: {
