@@ -1,9 +1,10 @@
 (function () {
 
     // Load modules.
-    var Quotes = Backtester.module('Quotes'),
-        TimeSeries = Backtester.module('TimeSeries'),
-        Strategy = Backtester.module('Strategy');
+    var Quotes      = Backtester.module('Quotes'),
+        TimeSeries  = Backtester.module('TimeSeries'),
+        Strategy    = Backtester.module('Strategy'),
+        Charts      = Backtester.module('Charts');
 
     // Parse out query parameters.
     // http://james.padolsey.com/javascript/bujs-1-getparameterbyname/
@@ -43,19 +44,27 @@
             strategy.backtest(function (quotes, values, allocations) {
                 console.log(values, allocations);
 
+                // Clear any existing content.
                 $('#main').html('');
 
-                quotes.each(function (timeseries) {
 
-                    new TimeSeries.SparkLine({
-                        model: timeseries
-                    }).appendTo('#main');
-                    /*
-                    new TimeSeries.AnnotatedTimeLine({
-                        model: timeseries
-                    }).appendTo('#main');
-                    */
+                var series = quotes.map(function (timeseries) {
+                    return {
+                        name: timeseries.get('ticker'),
+                        dates: timeseries.get('dates'),
+                        values: timeseries.getValues()
+                    };
                 });
+
+                new Charts.Chart({
+                    title: {
+                        text: 'Values'
+                    },
+                    subtitle: {
+                        text: 'Subtitle'
+                    },
+                    series: series
+                }).appendTo('#main');
             });
         }
     });
