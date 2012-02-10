@@ -57,37 +57,8 @@
 			});
 		},
 
-		// Return the values to use in a DataTable.
 		getValues: function () {
 			return this.get('values');
-		},
-
-		// Return a google.visualization.DataTable for this TimeSeries.
-		getDataTable: function () {
-
-			var dates  = this.getDates(),
-				values = this.getValues(),
-				name   = this.get('name');
-
-			var data = new google.visualization.DataTable();
-	        data.addColumn('date', 'Date');
-			data.addColumn('number', name);
-	        data.addRows(_.zip(dates, values));
-
-	        return data;
-		},
-
-		// Return only the values (no dates) in a DataTable.
-		getValuesTable: function () {
-
-			var values = this.getValues(),
-				name   = this.get('name');
-
-			var data = new google.visualization.DataTable();
-			data.addColumn('number', name);
-	        data.addRows(_.zip(values));
-
-	        return data;
 		}
 	});
 
@@ -198,79 +169,6 @@
 		rebalance: function (allocation, percents, date) {
 			var amount = this.valueOf(allocation, date);
 			return this.allocate(amount, percents, date);
-		}
-	});
-
-
-	/*--- Chart Views ---*/
-
-
-    /**
-     * The Chart base class draws itself as soon as the chart API has loaded.
-     */
-	var Chart = Backtester.View.extend({
-
-		afterRender: function () {
-
-			var view = this;
-			if (Backtester.app.visualization.loaded) {
-				// Draw immediately if the API is ready.
-				view.draw();
-			} else {
-				// Draw once it's loaded.
-				Backtester.app.on('visualization:load', function () {
-					view.draw();
-				});
-			}
-			return this;
-		},
-
-		draw: function () {
-			// Subclasses implement this.
-		}
-	});
-
-
-	/**
-	 * Render a TimeSeries as a simple sparkline image.
-	 */
-	TimeSeries.SparkLine = Chart.extend({
-		className: 'SparkLine',
-
-		draw: function () {
-
-			var data = this.model.getValuesTable();
-	        this.chart = new google.visualization.ImageSparkLine(this.el);
-		    this.chart.draw(data, {
-	    	    width: 120,
-	    	    height: 40,
-	    	    showAxisLines: false,
-	    	    labelPosition: 'left'
-	    	});
-		}
-	});
-
-
-	/**
-	 * Render a collection of TimeSeries on an interactive timeline.
-	 */
-	TimeSeries.AnnotatedTimeLine = Chart.extend({
-		className: 'AnnotatedTimeLine',
-
-		initialize: function (options) {
-			this.$el.css({
-				width: 700,
-				height: 250
-			});
-		},
-
-		draw: function () {
-
-	        var data = this.model.getDataTable();
-	        this.chart = new google.visualization.AnnotatedTimeLine(this.el);
-	        this.chart.draw(data, {
-	        	
-	        });
 		}
 	});
 

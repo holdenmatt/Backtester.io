@@ -16,11 +16,9 @@
 
 		initialize: function (attrs) {
 
-			// Use the ticker as the model id and default TimeSeries name.
-			var ticker = this.get('ticker');
+			// Use the ticker as the model id.
 			this.set({
-				'id': ticker,
-				'name': this.get('name') || ticker
+				'id': this.get('ticker')
 			});
 
 			TimeSeries.Model.prototype.initialize.apply(this, arguments);
@@ -86,7 +84,7 @@
 		var cached = Quotes.cache.pluck('id'),
 			needed = _.difference(tickers, cached);
 
-		console.log('Cached: [' + cached + '].');
+		console.log('Cached: [' + cached + ']');
 
 		// If everything we need is already cached, just return the collection.
 		if (needed.length === 0) {
@@ -94,7 +92,7 @@
 			return;
 		}
 
-		console.log('Fetching: [' + needed + '].');
+		console.log('Fetching: [' + needed + ']');
 
 		// Otherwise, fetch what we need to add to the cache.
 		var collection = new Quotes.MonthlyQuotes([], {

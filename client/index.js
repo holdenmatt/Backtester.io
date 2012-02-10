@@ -42,11 +42,9 @@
             });
 
             strategy.backtest(function (quotes, values, allocations) {
-                console.log(values, allocations);
 
                 // Clear any existing content.
                 $('#main').html('');
-
 
                 var series = quotes.map(function (timeseries) {
                     return {
@@ -74,21 +72,6 @@
     // Inside this function, kick-off all initialization, everything up to this
     // point should be definitions.
     jQuery(function($) {
-
-        // Google APIs should be loaded once the DOM is ready.
-        Backtester.app.visualization = {};
-        google.load('visualization', '1', {
-            packages: [
-                'annotatedtimeline',
-                'imagesparkline'
-            ],
-            callback: function () {
-                // Tell listeners that we're loaded.
-                Backtester.app.visualization.loaded = true;
-                Backtester.app.trigger('visualization:load');
-            }
-        });
-
 
         // Update ticker on search.
         $('form.navbar-search').submit(function () {
