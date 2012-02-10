@@ -53,6 +53,11 @@
 				shared: true
 			},
 			plotOptions: {
+				series: {
+					animation: {
+						duration: 500
+					}
+				},
 				line: {
 					lineWidth: 2,
 					marker: {
@@ -93,10 +98,5 @@
 			this.chart = new Highcharts.Chart(this.options);
 		}
 	});
-
-
-	// TODO:
-	// chart.showLoading();
-
 
 })(Backtester.module('Charts'));
