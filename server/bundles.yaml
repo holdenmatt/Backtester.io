@@ -29,8 +29,7 @@ app.js:
         - ../client/Core.js
         - ../client/modules/TimeSeries.js
         - ../client/modules/Quotes.js
-        - ../client/modules/Strategy.js
-        - ../client/modules/Charts.js
+        - ../client/modules/Portfolio.js
         - ../client/index.js
 
 
