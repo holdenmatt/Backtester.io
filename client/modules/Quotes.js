@@ -66,10 +66,9 @@
 
 	/**
 	 * Fetch and cache monthly quotes for an array of tickers.
-	 * Use success/error callbacks to return the collection.
+	 * Return the collection using a success callback.
 	 */
-	Quotes.fetch = function (tickers, options) {
-		options = options || {};
+	Quotes.fetch = function (tickers, success) {
 
 		// Get the tickers we don't have in the cache.
 		var cached  = cache.pluck('id'),
@@ -79,7 +78,7 @@
 
 		// If everything we need is already cached, just return the collection.
 		if (missing.length === 0) {
-			options.success(cache.getCollection(tickers));
+			success.call(null, cache.getCollection(tickers));
 			return;
 		}
 
@@ -93,9 +92,9 @@
 			success: function (collection) {
 				// Save the fetched results in the cache, and return the complete collection.
 				cache.add(collection.models);
-				options.success(cache.getCollection(tickers));
+				success.call(null, cache.getCollection(tickers));
 			},
-			error: options.error || function () {
+			error: function () {
 				alert('Error!');
 			}
 		});
