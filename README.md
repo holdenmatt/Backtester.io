@@ -1,22 +1,23 @@
 # Backtester.io
 
 Backtest asset allocations against historical data.
+A weekend project to help me rebalance my portfolio, and learn some new web technologies.
 
 
-### Purpose
+### Architecture
 
-Learn some new web technologies, and help me rebalance my portfolio.
+Almost everything happens client-side in the browser:
 
-Client:
+* app interactions,
+* all portfolio computations,
+* chart rendering (using HighCharts),
+* Backbone.js, Underscore, Twitter Bootstrap 2.0, jQuery...
 
-* Backbone.js
-* Twitter Bootstrap 2.0
-* jQuery, HighCharts, Underscore...
+The server is very simple:
 
-Server:
-
-* Flask / Python
-* Hosted on Heroku
+* serves static assets,
+* fetches monthly stock quotes from Yahoo, parses them, returns them as JSON,
+* Flask / Python, hosted on Heroku
 
 
 ### Install

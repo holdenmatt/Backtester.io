@@ -30,6 +30,13 @@
             return parseFloat(percent);
         });
 
+        // Default to equal split, if no percents are given.
+        if (tickers.length > 0 && percents.length === 0) {
+            percents = _.map(tickers, function (ticker) {
+                return 100.0 / tickers.length;
+            });
+        }
+
         return {
             tickers: tickers,
             percents: percents,
@@ -64,16 +71,18 @@
 
             var portfolio = getPortfolio(args);
             new Portfolio.Views.Quotes({
-                model: portfolio
-            }).renderTo('#chart');
+                model: portfolio,
+                el: '#chart'
+            }).render();
         },
 
         // Show annualized % returns, by starting year.
         returns: function (args) {
             var portfolio = getPortfolio(args);
             new Portfolio.Views.Returns({
-                model: portfolio 
-            }).renderTo('#chart');
+                model: portfolio,
+                el: '#chart'
+            }).render();
         },
 
         // Show risk (std dev of yearly returns) vs reward annualized return.
@@ -81,11 +90,10 @@
 
             var portfolio = getPortfolio(args);
             new Portfolio.Views.RiskReward({
-                model: portfolio 
-            }).renderTo('#chart');
+                model: portfolio,
+                el: '#chart'
+            }).render();
         },
-
-
     });
 
 

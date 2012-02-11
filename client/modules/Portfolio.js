@@ -44,7 +44,7 @@
 			},
             horizon: {
                 required: true,
-                min: 3
+                min: 2
             }
 		},
 
@@ -147,10 +147,6 @@
         // Apply some option defaults to all views.
         // Override these in subclasses or passed options.
         globalDefaults: {
-            chart: {
-                width: '900',
-                height: '400'
-            },
             credits: {
                 // Hide attribution string.
                 enabled: false
