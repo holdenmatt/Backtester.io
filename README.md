@@ -2,7 +2,10 @@
 
 Backtest asset allocations against historical data.
 
-Purpose: learn some new web technologies, and help me rebalance my portfolio.
+
+### Purpose
+
+Learn some new web technologies, and help me rebalance my portfolio.
 
 Client:
 
