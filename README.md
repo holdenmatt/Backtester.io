@@ -2,13 +2,27 @@
 
 Backtest asset allocations against historical data.
 
+Purpose: learn some new web technologies, and help me rebalance my portfolio.
+
+Client:
+
+* Backbone.js
+* Twitter Bootstrap 2.0
+* jQuery, HighCharts, Underscore...
+
+Server:
+
+* Flask / Python
+* Hosted on Heroku
+
+
 ### Install
 
 1. Clone this repo.
 2. Run:
 
 ```
-    $ virtualenv venv --distribute
+    $ virtualenv venv --distribute --no-site-packages
     $ source venv/bin/activate
     $ pip install -r requirements.txt
 ```
@@ -32,7 +46,7 @@ $ git push heroku master
 
 ### Thanks
 
-Developed using my [webapp-boilerplate](https://github.com/holdenmatt/webapp-boilerplate),
+Developed from my [webapp-boilerplate](https://github.com/holdenmatt/webapp-boilerplate),
 with thanks to:
 
 * https://github.com/tbranyen/backbone-boilerplate

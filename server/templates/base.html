@@ -60,41 +60,18 @@
   <div class="container-fluid">
     <div id="content" class="row-fluid">
 
-      <!-- Sidebar -->
-      <div id="sidebar" class="span3">
-        <div class="well sidebar-nav">
-          <ul class="nav nav-list">
-            <li class="nav-header">Sidebar</li>
-            <li class="active"><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li class="nav-header">Sidebar</li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li class="nav-header">Sidebar</li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-          </ul>
-        </div><!--/.well -->
-      </div><!--/#sidebar-->
+      {% include "sidebar.html" %}
 
       <!-- Main content -->
       <div id="main" class="span9">
-
         {% block main %}
         {% endblock %}
-
       </div><!--/#main-->
+
     </div><!--/#content-->
 
-
     <hr>
+
     <footer>
       <p>&copy; Matt Holden 2012</p>
     </footer>
