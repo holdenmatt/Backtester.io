@@ -156,6 +156,12 @@
     };
 
 
+    // Reformat a date string as a more readable month + year.
+    var formatDate = function (dateString) {
+        return moment(dateString, 'YYYY-MM-DD').format('MMM YYYY');
+    };
+
+
     // Base class for all chart views.
     var Chart = Backtester.View.extend({
 
@@ -232,12 +238,15 @@
 
             Quotes.fetch(this.model.get('tickers'), function (quotes) {
 
-                var dates = quotes.dates();
+                var dates = quotes.dates(),
+                    start = formatDate(_.first(dates)),
+                    end   = formatDate(_.last(dates));
+
                 options.title = {
                     text: 'Historical values'
                 };
                 options.subtitle = {
-                    text: _.first(dates) + ' to ' + _.last(dates)
+                    text: start + ' to ' + end
                 };
 
                 options.series = quotes.map(function (timeseries) {

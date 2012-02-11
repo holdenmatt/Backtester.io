@@ -102,12 +102,12 @@
     // point should be definitions.
     jQuery(function($) {
 
-        // Update ticker on search.
+        // Show ticker quotes on search.
         $('form.navbar-search').submit(function () {
 
-            // Get (and clear) and search input value.
+            // Get (and clear) the search input value.
             var input = $(this).find('input'),
-                href = 'graph/?tickers=' + input.val();
+                href = 'quotes/?tickers=' + input.val();
             input.val('');
 
             Backbone.history.navigate(href, true);
