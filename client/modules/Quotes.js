@@ -42,11 +42,16 @@
 	var cache = new Backbone.Collection();
 
 	// Use tickers as ids when cacheing, so we can lookup by ticker.
-	cache.add = function (models) {
+	cache.addModels = function (models) {
+		var toAdd = [],
+			self = this;
 		_.each(models, function (model) {
-			model.set('id', model.get('ticker'));
+			var id = model.get('ticker');
+			if (!self.get(id)) {
+				model.set('id', id);
+				self.add(model);
+			}
 		});
-		return Backbone.Collection.prototype.add.call(this, models);
 	};
 
 	// Return a TimeSeries.Collection for some given tickers.
@@ -92,7 +97,7 @@
 			success: function (collection) {
 				// Save the fetched results in the cache, and return the complete collection.
 				console.log('Success: [' + tickers + ']');
-				cache.add(collection.models);
+				cache.addModels(collection.models);
 				success.call(null, cache.getCollection(tickers));
 			},
 			error: function () {
