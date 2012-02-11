@@ -13,8 +13,8 @@
   <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
-        /* 40px to make container go to the bottom of the topbar. */
-        padding-top: 40px;
+        padding-top: 60px;
+        padding-bottom: 40px;
     }
   </style>
   {% block css %}{% endblock %}
@@ -36,17 +36,71 @@
 
 <body>
 
-  <header>
-    {% include "header.html" %}
-  </header>
+  <!-- Top navbar -->
+  <div id="navbar" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container-fluid">
 
-  <div id="main" class="container" role="main">
-    {% block main %}{% endblock %}
+        <a class="brand" href="#">Backtester.io</a>
+
+        <ul class="nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+
+        <form class="navbar-search pull-right">
+          <input type="text" class="search-query" placeholder="Search">
+        </form>
+
+      </div>
+    </div>
   </div>
 
-  <footer>
-    {% block footer %}{% endblock %}
-  </footer>
+  <!-- Everything below the navbar -->
+  <div class="container-fluid">
+    <div id="content" class="row-fluid">
+
+      <!-- Sidebar -->
+      <div id="sidebar" class="span3">
+        <div class="well sidebar-nav">
+          <ul class="nav nav-list">
+            <li class="nav-header">Sidebar</li>
+            <li class="active"><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li class="nav-header">Sidebar</li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li class="nav-header">Sidebar</li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+          </ul>
+        </div><!--/.well -->
+      </div><!--/#sidebar-->
+
+      <!-- Main content -->
+      <div id="main" class="span9">
+
+        {% block main %}
+        {% endblock %}
+
+      </div><!--/#main-->
+    </div><!--/#content-->
+
+
+    <hr>
+    <footer>
+      <p>&copy; Matt Holden 2012</p>
+    </footer>
+
+  </div><!--/.container-fluid-->
+
 
   <!-- Load JavaScript at the bottom for fast page loading -->
 
@@ -54,11 +108,14 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="/assets/js/libs/jquery.js">\x3C/script>')</script>
 
-  <!-- Google API Loader -->
-  <script src="https://www.google.com/jsapi"></script>
-
-  <!-- Additional JavaScript libraries and plugins -->
+  <!-- Include libs, templates, app JavaScript -->
   {% assets "libs.js" %}
+  <script src="{{ ASSET_URL }}"></script>
+  {% endassets %}
+  {% assets "templates.js" %}
+  <script src="{{ ASSET_URL }}"></script>
+  {% endassets %}
+  {% assets "app.js" %}
   <script src="{{ ASSET_URL }}"></script>
   {% endassets %}
 

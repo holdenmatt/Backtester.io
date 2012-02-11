@@ -1,16 +1,12 @@
 {% extends "base.html" %}
 
 
-{% block js %}
-    {% assets "templates.js" %}
-        <script src="{{ ASSET_URL }}"></script>
-    {% endassets %}
-    {% assets "app.js" %}
-        <script src="{{ ASSET_URL }}"></script>
-    {% endassets %}
-{% endblock %}
-
-
 {% block main %}
-<div id="chart"></div>
+	<div class="well">
+		<h2>H2</h2>
+		<p>Some text</p>
+	    <p><a class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+	</div>
+
+	<div id="chart"></div>
 {% endblock %}
