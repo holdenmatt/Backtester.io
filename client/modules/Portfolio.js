@@ -54,6 +54,21 @@
 			}
 		},
 
+        // Return a text description of the portfolio composition.
+        getDescription: function () {
+            var tickers = this.get('tickers'),
+                percents = this.get('percents');
+
+            if (tickers.length == 1) {
+                return tickers[0];
+            }
+            if (tickers.length > 1) {
+                return _.map(_.zip(tickers, percents), function (pair) {
+                    return pair[0] + ' (' + pair[1] + '%)';
+                }).join(', ');
+            }
+        },
+
 		// Backtest this portfolio over a given date range.
 		// Return the TimeSeries of portfolio values for these dates.
 		backtestDates: function (dates) {
@@ -313,7 +328,7 @@
             },
             xAxis: {
                 title: {
-                    text: 'Std Dev Yearly Returns (%)'
+                    text: 'Std Dev 1-Year Returns (%)'
                 }
             },
             yAxis: {
@@ -325,14 +340,16 @@
 
         render: function () {
             var options = this.options,
+                portfolio = this.model,
                 self = this;
 
-            this.model.backtestHorizon(function (startDates, annualizedReturns, stdDeviations) {
+            portfolio.backtestHorizon(function (startDates, annualizedReturns, stdDeviations) {
                 options.subtitle = {
                     text: this.get('horizon') + ' year horizon'
                 };
                 options.series = [{
-                    data: _.zip(stdDeviations, annualizedReturns)
+                    data: _.zip(stdDeviations, annualizedReturns),
+                    name: portfolio.getDescription()
                 }];
 
                 self.draw();
