@@ -197,7 +197,7 @@
             },
             yAxis: {
                 title: {
-                    text: 'Value ($)'
+                    text: '$'
                 },
                 min: 0
             },
@@ -287,7 +287,7 @@
                         data: _.zip(startDates, annualizedReturns)
                     },
                     {
-                        name: 'Std Dev (%)',
+                        name: 'Std Dev 1-Year Returns (%)',
                         data: _.zip(startDates, stdDeviations)
                     }
                 ];
