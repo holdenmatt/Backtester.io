@@ -11,24 +11,16 @@ import webassets.loaders
 
 DEBUG = True
 
-# static/template paths used by Flask:
-# http://flask.pocoo.org/docs/api/
-TEMPLATE_FOLDER = 'server/templates'
-
-# webassets bundle config:
-# http://elsdoerfer.name/docs/webassets/loaders.html#loaders
-BUNDLES_FILENAME = 'server/bundles.yaml'
-
 
 # Create the Flask app.
-app = flask.Flask(__name__,
-    template_folder=TEMPLATE_FOLDER
-)
+app = flask.Flask(__name__)
 app.root_path = os.path.join(os.path.dirname(__file__), '..')
 
 
 # Load webassets bundles from a config file.
+BUNDLES_FILENAME = 'bundles.yaml'
 bundles = webassets.loaders.YAMLLoader(BUNDLES_FILENAME).load_bundles()
+
 
 # Merge files in debug mode, but don't apply filters.
 assets = Environment(app)

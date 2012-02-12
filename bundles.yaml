@@ -4,7 +4,7 @@
 # http://elsdoerfer.name/docs/webassets/loaders.html#loaders
 #
 
-# Paths are relative to the static assets/ dir.
+# Paths are relative to the /static dir.
 
 
 # Bundle libs, except jQuery (loads from Google) and Modernizr (loads in head).
@@ -17,7 +17,6 @@ libs.js:
         - js/libs/backbone.validation.js
         - js/libs/moment.js
         - js/libs/highcharts.js
-        - js/libs/highstock.js
         - js/libs/bootstrap.js
 
 
