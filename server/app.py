@@ -9,7 +9,7 @@ from flask.ext.assets import Environment, Bundle
 import webassets.loaders
 
 
-DEBUG = False
+DEBUG = True
 
 
 # Create the Flask app.
