@@ -4,19 +4,21 @@
 # http://elsdoerfer.name/docs/webassets/loaders.html#loaders
 #
 
+# Paths are relative to the static assets/ dir.
+
 
 # Bundle libs, except jQuery (loads from Google) and Modernizr (loads in head).
 libs.js:
     filters: jsmin
     output: build/libs.js
     contents:
-        - ../assets/js/libs/underscore.js
-        - ../assets/js/libs/backbone.js
-        - ../assets/js/libs/backbone.validation.js
-        - ../assets/js/libs/moment.js
-        - ../assets/js/libs/highcharts.js
-        - ../assets/js/libs/highstock.js
-        - ../assets/js/libs/bootstrap.js
+        - js/libs/underscore.js
+        - js/libs/backbone.js
+        - js/libs/backbone.validation.js
+        - js/libs/moment.js
+        - js/libs/highcharts.js
+        - js/libs/highstock.js
+        - js/libs/bootstrap.js
 
 
 # Bundle all client scripts and modules.
@@ -31,11 +33,3 @@ app.js:
         - ../client/modules/Quotes.js
         - ../client/modules/Portfolio.js
         - ../client/index.js
-
-
-# Bundle all client templates as a Jammit-style JST file.
-templates.js:
-    filters: jst
-    output: build/templates.js
-    contents:
-        - ../client/templates/*.html

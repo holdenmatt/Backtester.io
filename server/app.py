@@ -7,24 +7,37 @@ import os
 import flask
 from flask.ext.assets import Environment, Bundle
 import webassets.loaders
-import settings
+
+
+DEBUG = True
+
+# static/template paths used by Flask:
+# http://flask.pocoo.org/docs/api/
+STATIC_FOLDER = 'assets'
+TEMPLATE_FOLDER = 'server/templates'
+
+# webassets bundle config:
+# http://elsdoerfer.name/docs/webassets/loaders.html#loaders
+BUNDLES_FILENAME = 'server/bundles.yaml'
+
 
 # Create the Flask app.
 app = flask.Flask(__name__,
-    static_folder=settings.STATIC_FOLDER,
-    template_folder=settings.TEMPLATE_FOLDER
+    static_folder=STATIC_FOLDER,
+    template_folder=TEMPLATE_FOLDER
 )
-app.config.from_object(settings)
+app.root_path = os.path.join(os.path.dirname(__file__), '..')
 
 
 # Load webassets bundles from a config file.
-dirname = os.path.dirname(os.path.abspath(__file__)) + '/'
-bundles_filename = dirname + settings.BUNDLES_FILENAME
-bundles = webassets.loaders.YAMLLoader(bundles_filename).load_bundles()
+bundles = webassets.loaders.YAMLLoader(BUNDLES_FILENAME).load_bundles()
 
 # Merge files in debug mode, but don't apply filters.
 assets = Environment(app)
-if settings.DEBUG:
+
+# assets.cache = False
+# assets.updater = 'always'
+if DEBUG:
     assets.debug = 'merge'
 
 for name, bundle in bundles.iteritems():
@@ -44,4 +57,4 @@ from quotes import *
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=settings.DEBUG)
+    app.run(host='0.0.0.0', port=port, debug=DEBUG)
