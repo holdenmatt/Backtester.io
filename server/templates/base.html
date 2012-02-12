@@ -10,7 +10,7 @@
   <meta name="author" content="">
 
   <!-- Styles -->
-  <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
         padding-top: 60px;
@@ -20,10 +20,10 @@
   {% block css %}{% endblock %}
 
   <!-- Favicon, touch icons -->
-  <link rel="shortcut icon" href="/assets/img/favicon.ico">
-  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png">
+  <link rel="shortcut icon" href="/static/img/favicon.ico">
+  <link rel="apple-touch-icon" href="/static/img/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/static/img/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/static/img/apple-touch-icon-114x114.png">
 
   <!-- HTML5 shim, for IE 6-8 support of HTML elements -->
   <!--[if lt IE 9]>
@@ -31,7 +31,7 @@
   <![endif]-->
 
   <!-- Modernizr should load in head, other scripts are loaded below. -->
-  <script src="/assets/js/libs/modernizr.js"></script>
+  <script src="/static/js/libs/modernizr.js"></script>
 </head>
 
 <body>
@@ -82,7 +82,7 @@
 
   <!-- Fetch jQuery from Google's CDN, or fall back to local -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script>window.jQuery || document.write('<script src="/assets/js/libs/jquery.js">\x3C/script>')</script>
+  <script>window.jQuery || document.write('<script src="/static/js/libs/jquery.js">\x3C/script>')</script>
 
   <!-- Include libs and app JavaScript -->
   {% assets "libs.js" %}

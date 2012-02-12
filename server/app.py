@@ -13,7 +13,6 @@ DEBUG = True
 
 # static/template paths used by Flask:
 # http://flask.pocoo.org/docs/api/
-STATIC_FOLDER = 'assets'
 TEMPLATE_FOLDER = 'server/templates'
 
 # webassets bundle config:
@@ -23,7 +22,6 @@ BUNDLES_FILENAME = 'server/bundles.yaml'
 
 # Create the Flask app.
 app = flask.Flask(__name__,
-    static_folder=STATIC_FOLDER,
     template_folder=TEMPLATE_FOLDER
 )
 app.root_path = os.path.join(os.path.dirname(__file__), '..')
