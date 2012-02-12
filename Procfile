@@ -1,3 +1,3 @@
 # Procfile -- production
 
-web: gunicorn server:app --bind=0.0.0.0:$PORT --workers=3
+web: gunicorn web:server/app --bind=0.0.0.0:$PORT --workers=2
