@@ -1,5 +1,5 @@
 Flask==0.8
-gunicorn==0.13.4
+gunicorn==19.5.0
 
 # Package assets.
 webassets==0.6
