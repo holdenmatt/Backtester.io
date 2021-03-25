@@ -4,4 +4,4 @@ gunicorn==0.13.4
 # Package assets.
 webassets==0.6
 Flask-Assets==0.6.2
-PyYAML==3.10
+PyYAML==5.4
